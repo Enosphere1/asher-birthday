@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agent Asher: Level 7</title>
+
+    <style>
+      /* 1. RESET: Remove default browser spacing so we have full control */
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(
+          135deg,
+          #0f0c29,
+          #302b63,
+          #24243e
+        ); /* Dark Space Theme */
+        height: 100vh; /* 100% of the Viewport Height */
+        display: flex; /* Turn on Flexbox Layout Mode */
+        justify-content: center; /* Center Horizontally */
+        align-items: center; /* Center Vertically */
+        font-family: "Courier New", Courier, monospace; /* Hacker Font */
+        color: white;
+        overflow: hidden; /* Stop scrollbars from appearing */
+      }
+
+      /* 2. THE CARD: Glassmorphism Effect */
+      .card {
+        background: rgba(255, 255, 255, 0.1); /* 10% White (See-through) */
+        backdrop-filter: blur(10px); /* Blur what is behind it */
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        width: 90%; /* Flexible width for phones */
+        max-width: 350px; /* But don't get bigger than 350px */
+
+        /* ANIMATION: The "Float" effect */
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .profile-img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%; /* Circle shape */
+        border: 3px solid #00d2ff;
+        object-fit: cover; /* Crop image to fit circle perfectly */
+        margin-bottom: 15px;
+        box-shadow: 0 0 20px #00d2ff; /* Glowing Blue Shadow */
+      }
+
+      /* 3. THE VIDEO: Hidden by default */
+      #asherVideo {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        border: 2px solid #00d2ff;
+        display: none; /* CRITICAL: This hides the video when page loads */
+      }
+
+      h1 {
+        color: #00d2ff;
+        font-size: 22px;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+      }
+
+      p {
+        font-size: 14px;
+        line-height: 1.6; /* Breathing room for text */
+        color: #e0e0e0;
+      }
+
+      /* 4. THE BUTTON */
+      .btn {
+        background: #00d2ff;
+        color: #0f0c29;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 15px;
+        transition: transform 0.2s; /* Smooth zoom */
+      }
+
+      .btn:hover {
+        transform: scale(1.05); /* Grow slightly when mouse hovers */
+        background: #ffffff;
+      }
+
+      /* Keyframes define the start and end of an animation */
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-15px);
+        } /* Move up */
+        100% {
+          transform: translateY(0px);
+        }
+      }
+
+      /* Canvas for Confetti (Invisible background layer) */
+      #confetti {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Let clicks pass through it */
+        z-index: -1; /* Send to back */
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="confetti"></canvas>
+
+    <div class="card">
+      <img
+        src="asherimage1.jpeg"
+        alt="Agent Asher"
+        class="profile-img"
+        id="profilePic"
+      />
+
+      <video id="asherVideo" controls>
+        <source src="asher1.mp4" type="video/mp4" />
+        Your browser does not support video.
+      </video>
+
+      <h1 id="title">AGENT DETECTED</h1>
+
+      <p id="message">
+        Name: <strong>ASHER UZUEGBUNA</strong><br />
+        Previous Status: <strong>Level 6</strong><br />
+        Mission: <strong>Unlock Birthday Protocol</strong>
+      </p>
+
+      <button class="btn" onclick="startMission()">GRANT WISH</button>
+    </div>
+
+    <script>
+      function startMission() {
+        // STEP 1: GRAB THE ELEMENTS WE NEED TO CONTROL
+        // Think of this like picking up the remote control for each item.
+        const video = document.getElementById("asherVideo");
+        const pic = document.getElementById("profilePic");
+        const title = document.getElementById("title");
+        const msg = document.getElementById("message");
+        const btn = document.querySelector(".btn");
+
+        // STEP 2: CHANGE THE "SKIN" (CSS)
+
+        // Hide the static picture
+        pic.style.display = "none";
+
+        // Show the video (Change display from 'none' to 'block')
+        video.style.display = "block";
+
+        // Hide the button (So he can't click it twice)
+        btn.style.display = "none";
+
+        // STEP 3: CHANGE THE CONTENT (HTML)
+        title.innerText = "ACCESS GRANTED!";
+        title.style.color = "#00ff88"; // Change text to Green
+
+        msg.innerHTML =
+          "Happy 7th Birthday, Asher!<br>Level 7 Unlocked.<br><strong>God Bless U!</strong>";
+
+        // STEP 4: ACTION!
+        video.play(); // This command forces the video to start
+        launchConfetti(); // Fire the confetti cannon
+      }
+
+      // --- CONFETTI ENGINE (Don't memorize this, just copy-paste it) ---
+      // This is standard code to draw colorful squares on the canvas
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let particles = [];
+
+      function launchConfetti() {
+        for (let i = 0; i < 100; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            size: Math.random() * 10 + 5,
+            speed: Math.random() * 5 + 2,
+          });
+        }
+        animate();
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p) => {
+          p.y += p.speed;
+          if (p.y > canvas.height) p.y = -20;
+          ctx.fillStyle = p.color;
+          ctx.fillRect(p.x, p.y, p.size, p.size);
+        });
+        requestAnimationFrame(animate);
+      }
+    </script>
+  </body>
+</html>
